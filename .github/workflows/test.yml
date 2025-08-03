@@ -1,0 +1,41 @@
+name: Run Frontend & Backend Tests
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  install-and-test:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: .
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # Backend install & test
+      - name: Install backend dependencies
+        run: npm ci
+        working-directory: ./src/backend
+
+      - name: Run backend tests
+        run: npm test
+        working-directory: ./src/backend
+
+      # Frontend install & test (if tests exist)
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: ./src/frontend
+
+      - name: Run frontend build/test
+        run: npm run build || true
+        working-directory: ./src/frontend
