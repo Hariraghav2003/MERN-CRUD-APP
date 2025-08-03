@@ -1,0 +1,30 @@
+{
+  "name": "reactcrudapp",
+  "version": "1.0.0",
+  "description": "Backend with all db's",
+  "license": "ISC",
+  "author": "Hariraghav.S",
+  "type": "commonjs",
+  "main": "Server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cross-env IS_OFFLINE=true node Server.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.859.0",
+    "aws-sdk": "^2.1692.0",
+    "body-parser": "^2.2.0",
+    "bson": "^6.10.4",
+    "cookieparser": "^0.1.0",
+    "cors": "^2.8.5",
+    "cross-env": "^10.0.0",
+    "dotenv": "^16.5.0",
+    "dynamoose": "^4.0.4",
+    "express": "^5.1.0",
+    "mongoose": "^8.17.0",
+    "multer": "^1.4.5-lts.2",
+    "mysql2": "^3.14.3",
+    "path": "^0.12.7",
+    "sequelize": "^6.37.7"
+  }
+}
