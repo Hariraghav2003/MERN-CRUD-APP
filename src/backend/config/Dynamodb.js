@@ -28,7 +28,7 @@ if (process.env.NODE_ENV !== "test") {
     console.log("✅ Connected to AWS DynamoDB");
   }
 } else{
-    console.log("🧪Skipping DynamoDB config in test mode");
+    console.log("🧪Skipping DynamoDB config in test mode ");
 }
 
 module.exports = dynamoose;
