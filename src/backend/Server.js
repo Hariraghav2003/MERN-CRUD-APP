@@ -20,7 +20,7 @@ if (process.env.NODE_ENV !== 'test') {
 
 
 const allowedOrigins = [
-  "http://localhost:3000"  
+  "http://localhost:3000"   
 ];
 
 // Middleware to reject requests with unauthorized origin
