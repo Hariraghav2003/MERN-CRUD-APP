@@ -3,9 +3,6 @@ const app = require("../Server");
 
 const allowedOrigin = "http://localhost:3000";
 
-const request = require("supertest");
-const app = require("../Server"); // This should export just the Express app
-
 describe("API route health checks with origin", () => {
   it("should allow /mongo request from allowed origin", async () => {
     const res = await request(app)
