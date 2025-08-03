@@ -1,11 +1,17 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    directory: "src/backend"
+    directory: "/src/backend"
     schedule:
       interval: "weekly"
+    commit-message:
+      prefix: "deps"
+    automerge: true
 
   - package-ecosystem: "npm"
-    directory: "src/frontend"
+    directory: "/src/frontend"
     schedule:
       interval: "weekly"
+    commit-message:
+      prefix: "deps"
+    automerge: true
