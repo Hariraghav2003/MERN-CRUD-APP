@@ -1,8 +1,10 @@
-import React from 'react'
+import Sqlcreatebutton from './Sqlcreatebutton'
 
 function Sql() {
   return (
-    <div>Sql</div>
+    <div>
+      <Sqlcreatebutton></Sqlcreatebutton>
+    </div>
   )
 }
 
