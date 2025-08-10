@@ -1,7 +1,7 @@
 const { Sequelize } = require("sequelize");
 
 // Connect to MySQL
-const mysql = new Sequelize("myapp", "root", "root", {
+const mysql = new Sequelize("crud", "root", "root", {
   host: "localhost",
   dialect: "mysql",
 });

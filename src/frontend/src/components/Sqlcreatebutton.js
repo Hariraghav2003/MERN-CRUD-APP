@@ -1,59 +1,99 @@
-import { ToastContainer, toast } from "react-toastify";
 import * as React from "react";
-import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import { ImCross } from "react-icons/im";
 import Button from "@mui/material/Button";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import TextField from "@mui/material/TextField";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaTrashCan } from "react-icons/fa6";
-export default function Sqlcreatebutton() {
+export default function Sqlcreatebutton({ onCreated }) {
   const [open, setOpen] = React.useState(false);
-  const [formData,setFormData]=React.useState({
-    Name:"",
-    Email :"",
+  const [formData, setFormData] = React.useState({
+    Name: "",
+    Email: "",
     Phone: "",
-    Address :""
-  })
-  // Open dialog
+    Address: "",
+  });
+
+  // New: state for errors
+  const [errors, setErrors] = React.useState({});
+
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  // Close dialog
   const handleClose = () => {
     setOpen(false);
+    setFormData({
+      Name: "",
+      Email: "",
+      Phone: "",
+      Address: "",
+    });
+    setErrors({});
   };
 
-  const handleChange =()=>{
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
 
-  }
+    // Clear error for the field as user types
+    setErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
+  };
 
-  // Form submission
+  // Validate and set errors if any
+  const validate = () => {
+    const { Name, Email, Phone, Address } = formData;
+    const newErrors = {};
+
+    if (!Name.trim()) newErrors.Name = "Name is required";
+    if (!Email.trim()) newErrors.Email = "Email is required";
+    else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(Email)) newErrors.Email = "Enter a valid email";
+    }
+    if (!Phone.trim()) newErrors.Phone = "Phone is required";
+    else {
+      const phoneRegex = /^\d{7,15}$/;
+      if (!phoneRegex.test(Phone))
+        newErrors.Phone = "Phone must be 7-15 digits only";
+    }
+    if (!Address.trim()) newErrors.Address = "Address is required";
+
+    setErrors(newErrors);
+    // Return true if no errors
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload = {};
-
+    if (!validate()) return;
+    const payload=formData
     try {
       const res = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/coursedetails`,
+        `${process.env.REACT_APP_BACKEND_URL}/sql/createuser`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ payload }),
+          body: JSON.stringify(payload),
           credentials: "include",
         }
       );
 
-      if (res.ok) {
+      if (res.status===201) {
         toast.success("New user added");
         handleClose();
+        onCreated();
       } else if (res.status === 409) {
         toast.warning("User already exists");
-      } else {
-        toast.error("Failed to add user");
       }
     } catch (err) {
       toast.error("Server error");
@@ -84,7 +124,7 @@ export default function Sqlcreatebutton() {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <span>Data</span>
+            <span>Add New User</span>
             <span style={{ cursor: "pointer" }} onClick={handleClose}>
               <ImCross />
             </span>
@@ -101,10 +141,12 @@ export default function Sqlcreatebutton() {
             label="Name"
             fullWidth
             variant="standard"
+            value={formData.Name}
             onChange={handleChange}
+            error={!!errors.Name}
+            helperText={errors.Name}
           />
           <TextField
-            autoFocus
             required
             margin="dense"
             id="Email"
@@ -112,10 +154,12 @@ export default function Sqlcreatebutton() {
             label="Email"
             fullWidth
             variant="standard"
+            value={formData.Email}
             onChange={handleChange}
+            error={!!errors.Email}
+            helperText={errors.Email}
           />
           <TextField
-            autoFocus
             required
             margin="dense"
             id="Phone"
@@ -123,10 +167,12 @@ export default function Sqlcreatebutton() {
             label="Phone"
             fullWidth
             variant="standard"
+            value={formData.Phone}
             onChange={handleChange}
+            error={!!errors.Phone}
+            helperText={errors.Phone}
           />
           <TextField
-            autoFocus
             required
             margin="dense"
             id="Address"
@@ -134,7 +180,10 @@ export default function Sqlcreatebutton() {
             label="Address"
             fullWidth
             variant="standard"
+            value={formData.Address}
             onChange={handleChange}
+            error={!!errors.Address}
+            helperText={errors.Address}
           />
         </DialogContent>
 

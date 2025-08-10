@@ -3,13 +3,24 @@ const User = require("../model/Usermodel");
 exports.createUser = async (req, res) => {
   const payload = req.body;
   try {
-    const user = await User.create(payload);
+    // Check if email already exists
+    const existingUser = await User.findOne({
+      where: { Email: payload.Email },
+    });
+
+    if (existingUser) {
+      return res.status(409).json({ error: "Email already exists" });
+    }
+
+    // Create new user only if no duplicate found
+    await User.create(payload);
     res.status(201).send("User created in SQL!!");
   } catch (err) {
     console.log("Error in SQL DB user creation", err);
     return res.status(400).json({ error: err.message });
   }
 };
+
 
 exports.getAllUsers = async (req, res) => {
   try {

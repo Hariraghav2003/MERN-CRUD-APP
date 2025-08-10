@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-} from "@ant-design/icons";
-import { Button, Layout, Menu, Breadcrumb, theme } from "antd";
+import { useState, lazy, Suspense } from "react";
+import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import { Button, Layout, Menu, Breadcrumb, theme, Spin } from "antd";
 import { SiMongodb } from "react-icons/si";
 import { SiMysql } from "react-icons/si";
 import { FaAws } from "react-icons/fa6";
-import Sql from '../components/Sql';
-import Mongo from '../components/Mongo';
-import Dynamo from "../components/Dynamo";
+
 const { Header, Sider, Content } = Layout;
+
+// Lazy load components
+const Sql = lazy(() => import("../components/Sql"));
+const Mongo = lazy(() => import("../components/Mongo"));
+const Dynamo = lazy(() => import("../components/Dynamo"));
 
 const Home = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -23,7 +23,7 @@ const Home = () => {
   const menuItems = [
     { key: "1", icon: <SiMysql size={25} />, label: "My Sql" },
     { key: "2", icon: <SiMongodb />, label: "Mongodb" },
-    { key: "3", icon: <FaAws /> , label: "Dynamodb" },
+    { key: "3", icon: <FaAws />, label: "Dynamodb" },
   ];
 
   return (
@@ -73,15 +73,11 @@ const Home = () => {
             borderRadius: borderRadiusLG,
           }}
         >
-          {selectedKey === "1" && (
-            <Sql></Sql>
-          )}
-          {selectedKey === "2" && (
-            <Mongo></Mongo>
-          )}
-          {selectedKey === "3" && (
-            <Dynamo></Dynamo>
-          )}
+          <Suspense fallback={<Spin size="large" />}>
+            {selectedKey === "1" && <Sql />}
+            {selectedKey === "2" && <Mongo />}
+            {selectedKey === "3" && <Dynamo />}
+          </Suspense>
         </Content>
       </Layout>
     </Layout>

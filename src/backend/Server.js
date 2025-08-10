@@ -11,7 +11,11 @@ dotenv.config();
 
 const app = express();
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true
+}));
+
 
 if (process.env.NODE_ENV !== 'test') {
   connectSql();
@@ -26,7 +30,6 @@ const allowedOrigins = [
 // Middleware to reject requests with unauthorized origin
 app.use((req, res, next) => {
   const origin = req.headers.origin || req.headers.referer;
-
   if (allowedOrigins.includes(origin)) {
     next(); // origin is allowed
   } else {
