@@ -11,7 +11,7 @@
     "start": "cross-env IS_OFFLINE=true node Server.js"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.859.0",
+    "@aws-sdk/client-dynamodb": "^3.873.0",
     "aws-sdk": "^2.1692.0",
     "body-parser": "^2.2.0",
     "bson": "^6.10.4",
@@ -22,7 +22,7 @@
     "dynamoose": "^4.0.4",
     "express": "^5.1.0",
     "jest": "^30.0.5",
-    "mongoose": "^8.17.0",
+    "mongoose": "^8.18.0",
     "multer": "^2.0.2",
     "mysql2": "^3.14.3",
     "path": "^0.12.7",
