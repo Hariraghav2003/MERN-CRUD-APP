@@ -7,7 +7,7 @@
   "type": "commonjs",
   "main": "Server.js",
   "scripts": {
-  "test": "cross-env NODE_ENV=test jest",
+    "test": "cross-env NODE_ENV=test jest",
     "start": "cross-env IS_OFFLINE=true node Server.js"
   },
   "dependencies": {
