@@ -15,7 +15,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "https://mern-crud-app-theta.vercel.app",
+      "https://mern-crud-app-hariraghav.vercel.app",
     ],
     credentials: true,
   }),
@@ -28,7 +28,7 @@ if (process.env.NODE_ENV !== "test") {
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://mern-crud-app-theta.vercel.app",
+  "https://mern-crud-app-hariraghav.vercel.app",
 ];
 let origin;
 
@@ -46,7 +46,7 @@ app.use((req, res, next) => {
 app.use("/mongo", mongoRoutes);
 app.use("/sql", sqlRoutes);
 
-if (origin !== "https://mern-crud-app-theta.vercel.app") {
+if (origin !== "https://mern-crud-app-hariraghav.vercel.app") {
   app.use("/dynamo", dynamoRoutes);
 }
 
