@@ -2,34 +2,39 @@ const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const express = require("express");
-const {connectSql} = require("./config/Sqldb");
+const { connectSql } = require("./config/Sqldb");
 const connectDb = require("./config/Mongodb");
-const mongoRoutes=require("./routes/Usermongoroutes");
+const mongoRoutes = require("./routes/Usermongoroutes");
 const sqlRoutes = require("./routes/Usersqlroutes");
-const dynamoRoutes=require("./routes/Dynamodbroute")
-dotenv.config(); 
+const dynamoRoutes = require("./routes/Dynamodbroute");
+dotenv.config();
 
 const app = express();
 app.use(bodyParser.json());
-app.use(cors({
-  origin: "http://localhost:3000",
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://mern-crud-app-hariraghav.vercel.app",
+    ],
+    credentials: true,
+  }),
+);
 
-
-if (process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== "test") {
   connectSql();
   connectDb();
 }
 
-
 const allowedOrigins = [
-  "http://localhost:3000"
+  "http://localhost:3000",
+  "https://mern-crud-app-hariraghav.vercel.app",
 ];
+let origin;
 
 // Middleware to reject requests with unauthorized origin
 app.use((req, res, next) => {
-  const origin = req.headers.origin || req.headers.referer;
+  origin = req.headers.origin || req.headers.referer;
   if (allowedOrigins.includes(origin)) {
     next(); // origin is allowed
   } else {
@@ -38,9 +43,12 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.use("/mongo",mongoRoutes);
-app.use("/sql",sqlRoutes);
-app.use("/dynamo",dynamoRoutes)
+app.use("/mongo", mongoRoutes);
+app.use("/sql", sqlRoutes);
+
+if (origin !== "https://mern-crud-app-hariraghav.vercel.app") {
+  app.use("/dynamo", dynamoRoutes);
+}
 
 module.exports = app;
 
