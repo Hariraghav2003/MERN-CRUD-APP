@@ -3,6 +3,8 @@ import Dynamodbcreatebutton from "./Dynamodbcreatebutton";
 import Dynamodblist from "./Dynamodblist";
 
 function Dynamo() {
+  const dynamokey =
+    process.env.REACT_APP_USE_DYNAMODB === "true" ? true : false;
   const [refreshKey, setRefreshKey] = useState(0);
 
   // This function will be passed to the create button
@@ -11,8 +13,14 @@ function Dynamo() {
   };
   return (
     <>
-      <Dynamodbcreatebutton onCreated={handleCreated}></Dynamodbcreatebutton>
-      <Dynamodblist refreshKey={refreshKey}></Dynamodblist>
+      {dynamokey ? (
+        <>
+          <Dynamodbcreatebutton onCreated={handleCreated} />
+          <Dynamodblist refreshKey={refreshKey} />
+        </>
+      ) : (
+        <p>Run it in local using docker to enable DynamoDB features</p>
+      )}
     </>
   );
 }
